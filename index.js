@@ -1,5 +1,7 @@
 const express = require("express");
+const bodyParser = require("body-parser");
 const app = express();
+app.use(bodyParser.json());
 
 const bookRouter = require("./book-router.js")
 
@@ -33,7 +35,20 @@ app.get("/user/:name", function (req, res) {
 // modularized routes
 app.use('/books', bookRouter);
 
-const port = process.env.PORT || 3000;
+// consuming query string
+app.get('/input', function(req, res) {
+    res.send({
+        query: req.query,
+        appName: req.get('app-name')
+    });
+})
+
+app.post('/input', function(req, res) {
+    const { name } = req.body;
+    res.send(`Hello, ${name}`);
+})
+
+const port = process.env.PORT || 8000;
 app.listen(port, function() {
     console.log(`Server started at ${port}`);
 });

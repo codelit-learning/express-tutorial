@@ -1,5 +1,6 @@
 const express = require("express");
 const bodyParser = require("body-parser");
+const path = require('path');
 const app = express();
 app.use(bodyParser.json());
 
@@ -46,6 +47,48 @@ app.get('/input', function(req, res) {
 app.post('/input', function(req, res) {
     const { name } = req.body;
     res.send(`Hello, ${name}`);
+})
+
+app.get('/close-conn', function (req, res) {
+    res.write("hello");
+    res.write("hi");
+    res.end();
+})
+
+app.get('/json', function (req, res) {
+    res.json({name: "codelit"})
+})
+
+app.get('/header', function (req, res) {
+    res.set('X-CUSTOM-HEADER', 'CodeLit');
+    res.json({name: "codelit"})
+})
+
+app.get('/status', function (req, res) {
+    res.status(404).end();
+})
+
+app.get('/login', function (req, res) {
+    res.redirect("/json");
+})
+
+app.get('/send-file', function (req, res) {
+    res.sendFile(path.resolve("./index.html"));
+})
+
+app.get('/send-attachment', function (req, res) {
+    res.attachment(path.resolve("./index.html"));
+    res.end();
+})
+
+app.get('/set-cookie', function (req, res) {
+    res.cookie('demo', 'demo-cookie');
+    res.end();
+})
+
+app.get('/clear-cookie', function (req, res) {
+    res.clearCookie('demo');
+    res.end();
 })
 
 const port = process.env.PORT || 8000;

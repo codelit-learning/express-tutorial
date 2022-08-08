@@ -1,10 +1,13 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const path = require('path');
+const logger = require('./logger');
 const app = express();
 app.use(bodyParser.json());
 
 const bookRouter = require("./book-router.js")
+
+app.use(logger);
 
 // route chaining
 app.route("/chain")

@@ -4,6 +4,9 @@ const path = require('path');
 const logger = require('./logger');
 const app = express();
 app.use(bodyParser.json());
+app.use(express.static("public"))
+
+app.set('view engine', 'pug');
 
 const bookRouter = require("./book-router.js")
 
@@ -22,8 +25,8 @@ app.route("/chain")
     })
 
 // handling all routes
-app.all('/anything', function (req, res) {
-    res.send(req.method);
+app.all('/anything/:name?', function (req, res) {
+    res.render('index', { name: req.params.name || "CodeLit" });
 })
 
 // regex based route
